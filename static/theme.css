@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+/* Dynamic Premium Design System */
+:root {
+    --app-font: 'Outfit', sans-serif;
+}
+
+body {
+    font-family: var(--app-font);
+    background-color: var(--bs-body-bg);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    background-size: cover;
+    transition: background 0.5s ease;
+}
+
+/* Custom Themes for Bootstrap based UI with Gradients */
+[data-theme="classic"] {
+    --bs-primary: #0d6efd;
+    --bs-success: #198754;
+    --bs-warning: #ffc107;
+    --bs-info: #0dcaf0;
+    --bs-body-bg: #f8f9fa;
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="ocean"] {
+    --bs-primary: #0077b6;
+    --bs-success: #00b4d8;
+    --bs-warning: #90e0ef;
+    --bs-info: #caf0f8;
+    --bs-body-bg: #f8fdff;
+    --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    --card-bg: rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="forest"] {
+    --bs-primary: #2d6a4f;
+    --bs-success: #40916c;
+    --bs-warning: #74c69d;
+    --bs-info: #b7e4c7;
+    --bs-body-bg: #f3faf5;
+    --bg-gradient: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    --card-bg: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="sunset"] {
+    --bs-primary: #dc2f02;
+    --bs-success: #e85d04;
+    --bs-warning: #f48c06;
+    --bs-info: #ffba08;
+    --bs-body-bg: #fffbf8;
+    --bg-gradient: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="midnight"] {
+    --bs-primary: #3c096c;
+    --bs-success: #5a189a;
+    --bs-warning: #7b2cbf;
+    --bs-info: #c77dff;
+    --bs-body-bg: #fdfbff;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: rgba(0, 0, 0, 0.4);
+    --textColor: #ffffff;
+}
+
+[data-theme="midnight"] body {
+    color: var(--textColor);
+}
+
+[data-theme="midnight"] .card {
+    color: var(--textColor);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+[data-theme="midnight"] .text-muted {
+    color: #d1d1d1 !important;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background-color: var(--card-bg, rgba(255,255,255,0.9));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 1.2rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Micro-animations */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Buttons Polish */
+.btn {
+    transition: all 0.2s ease-in-out;
+    border-radius: 50px;
+}
+.btn:hover {
+    transform: scale(1.05);
+}
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Progress Dashboards */
+.progress-card {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-success) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.progress-card:hover {
+    transform: none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.subtask-list {
+    background-color: rgba(100,100,100,0.05);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Task Check Anim */
+.text-success {
+    animation: successPop 0.3s ease;
+}
+
+@keyframes successPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Navbar overrides */
+.navbar {
+    backdrop-filter: blur(10px);
+    background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.85) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Base styles for progress bars and subtasks */
+.progress-card {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-success) 100%);
+    color: white;
+}
+.subtask-list {
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 8px;
+    padding: 10px;
+}

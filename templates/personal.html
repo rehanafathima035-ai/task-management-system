@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Mode - Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/theme.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 p-3 shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/dashboard"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <div class="d-flex align-items-center">
+            <span class="navbar-text text-white me-3">👤 {{ username }}'s Personal Tasks</span>
+            <select id="themeSelector" class="form-select form-select-sm w-auto shadow-sm" onchange="changeTheme(this)">
+                <option value="classic">Classic Theme</option>
+                <option value="ocean">Ocean Blue</option>
+                <option value="forest">Forest Green</option>
+                <option value="sunset">Sunset Orange</option>
+                <option value="midnight">Midnight Purple</option>
+            </select>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <!-- Add Task Form -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-primary mb-3">Add New Task</h5>
+                    <form action="/personal/add" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" required placeholder="e.g. Do laundry">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Additional details"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" name="due_date" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold">Add Task</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="col-md-8">
+            {% if reminders %}
+            <div class="alert alert-warning shadow-sm rounded-4 mb-4">
+                <h5 class="fw-bold"><i class="fas fa-bell"></i> Upcoming Reminders (Due within 7 Days)</h5>
+                <ul class="mb-0">
+                    {% for r in reminders %}
+                    <li><strong>{{ r[1] }}</strong> is due on {{ r[2] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Task Progress -->
+            <div class="card progress-card shadow-sm border-0 rounded-4 p-3 mb-4">
+                <h5 class="fw-bold mb-2">Your Progress</h5>
+                <div class="d-flex justify-content-between mb-1 small text-white">
+                    <span>{{ completed_tasks }} of {{ total_tasks }} tasks completed</span>
+                    <span>
+                        {% if total_tasks > 0 %}
+                            {{ (completed_tasks / total_tasks * 100)|round|int }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="progress rounded-pill bg-light" style="height: 10px; opacity: 0.8;">
+                    {% if total_tasks > 0 %}
+                    <div class="progress-bar bg-success" style="width: {{ (completed_tasks / total_tasks * 100) }}%;"></div>
+                    {% else %}
+                    <div class="progress-bar bg-success" style="width: 0%;"></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <h4 class="fw-bold mb-3">Your Tasks</h4>
+            {% if tasks %}
+                <div class="row g-3">
+                {% for task in tasks %}
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 rounded-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1 fw-bold {% if task[4] == 'Completed' %}text-decoration-line-through text-muted{% endif %}">
+                                            {{ task[1] }}
+                                        </h5>
+                                        <p class="mb-2 text-muted small">{{ task[2] }}</p>
+                                        <div class="d-flex gap-2">
+                                            <span class="badge bg-info text-dark rounded-pill"><i class="fas fa-calendar-alt"></i> Due: {{ task[3] }}</span>
+                                            {% if task[4] == 'Completed' %}
+                                                <span class="badge bg-success rounded-pill">Completed</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark rounded-pill">Pending</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a href="/personal/status/{{ task[0] }}" {% if task[4] == 'Pending' %}onclick="return completeTask(this.href);"{% endif %} class="btn btn-sm {% if task[4] == 'Completed' %}btn-secondary{% else %}btn-success{% endif %} rounded-circle px-3 py-2" title="Toggle Status">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary rounded-circle px-3 py-2" data-bs-toggle="modal" data-bs-target="#editModal{{ task[0] }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <a href="/personal/delete/{{ task[0] }}" class="btn btn-sm btn-outline-danger rounded-circle px-3 py-2" onclick="return confirm('Are you sure you want to delete this task?');">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4 text-muted opacity-25">
+
+                                <!-- Subtasks Section -->
+                                <div class="subtask-list">
+                                    <h6 class="fw-bold mb-3 text-muted" style="font-size: 0.9rem;"><i class="fas fa-list-ul"></i> Subtasks</h6>
+                                    <ul class="list-group list-group-flush mb-3 bg-transparent border-0">
+                                        {% if subtasks and task[0] in subtasks %}
+                                            {% for st in subtasks[task[0]] %}
+                                            <li class="list-group-item px-3 py-2 mb-2 rounded-3 border-0 d-flex justify-content-between align-items-center p-0" style="background-color: rgba(255,255,255,0.4) !important;">
+                                                <div>
+                                                    <a href="/subtask/{{ st[0] }}/toggle?source=personal" {% if not st[3] %}onclick="return completeTask(this.href);"{% endif %} class="text-decoration-none {% if st[3] %}text-success{% else %}text-muted{% endif %} me-2">
+                                                        <i class="{% if st[3] %}fas fa-check-square fs-5{% else %}far fa-square fs-5{% endif %} align-middle"></i>
+                                                    </a>
+                                                    <span class="{% if st[3] %}text-decoration-line-through text-muted{% else %}fw-medium{% endif %} align-middle">{{ st[2] }}</span>
+                                                </div>
+                                                <a href="/subtask/{{ st[0] }}/delete?source=personal" class="btn btn-sm btn-link text-danger p-0 m-0" onclick="return confirm('Delete subtask?');"><i class="fas fa-times fs-5 text-danger"></i></a>
+                                            </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="list-group-item bg-transparent px-0 border-0 text-muted small"><i class="fas fa-info-circle"></i> No subtasks yet.</li>
+                                        {% endif %}
+                                    </ul>
+                                    <form action="/task/{{ task[0] }}/add_subtask" method="POST" class="d-flex w-100">
+                                        <input type="hidden" name="source" value="personal">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" name="title" class="form-control rounded-start-pill ps-3" placeholder="Add a new step..." required>
+                                            <button type="submit" class="btn btn-primary rounded-end-pill px-3 fw-bold border-start-0"><i class="fas fa-plus"></i> Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal{{ task[0] }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Task</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form action="/personal/edit/{{ task[0] }}" method="POST">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Title</label>
+                                            <input type="text" name="title" class="form-control" value="{{ task[1] }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea name="description" class="form-control" rows="3">{{ task[2] }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Due Date</label>
+                                            <input type="date" name="due_date" class="form-control" value="{{ task[3] }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info border-0 shadow-sm rounded-4 text-center p-5">
+                    <h5>No tasks yet!</h5>
+                    <p class="mb-0">Use the form on the left to add your first task.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/theme.js"></script>
+</body>
+</html>

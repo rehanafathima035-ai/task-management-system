@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Task Management System</title>
+    <!-- Bootstrap CSS for attractive UI -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/theme.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f6;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .mode-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        .mode-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .icon-container {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="dashboard-header text-center">
+        <div class="container">
+            <div class="text-end mb-2">
+                <select id="themeSelector" class="form-select form-select-sm d-inline-block w-auto shadow-sm" onchange="changeTheme(this)" style="background-color: rgba(255,255,255,0.8);">
+                    <option value="classic">Classic Theme</option>
+                    <option value="ocean">Ocean Blue</option>
+                    <option value="forest">Forest Green</option>
+                    <option value="sunset">Sunset Orange</option>
+                    <option value="midnight">Midnight Purple</option>
+                </select>
+            </div>
+            <h1 class="display-4 fw-bold">Welcome, {{ username }}!</h1>
+            <p class="lead">Select a workspace to get started</p>
+            <a href="/logout" class="btn btn-light mt-3 fw-bold text-danger rounded-pill px-4">Logout</a>
+        </div>
+    </div>
+
+    <!-- Mode Selection -->
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            <!-- Personal Mode Card -->
+            <div class="col-md-5">
+                <div class="card mode-card h-100 text-center p-5 shadow-sm" onclick="window.location.href='/personal';">
+                    <div class="card-body">
+                        <div class="icon-container">👤</div>
+                        <h2 class="card-title fw-bold">Personal Mode</h2>
+                        <p class="card-text text-muted">Manage your own daily tasks, set due dates, and keep your life organized.</p>
+                        <a href="/personal" class="btn btn-primary rounded-pill px-4 mt-3">Enter Personal Space</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Mode Card -->
+            <div class="col-md-5">
+                <div class="card mode-card h-100 text-center p-5 shadow-sm" onclick="window.location.href='/professional';">
+                    <div class="card-body">
+                        <div class="icon-container">👥</div>
+                        <h2 class="card-title fw-bold">Professional Mode</h2>
+                        <p class="card-text text-muted">Create teams, invite members, and assign tasks to your group efficiently.</p>
+                        <a href="/professional" class="btn btn-outline-primary rounded-pill px-4 mt-3">Enter Team Space</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/theme.js"></script>
+</body>
+</html>

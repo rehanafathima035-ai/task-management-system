@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Your Ultimate To-Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/theme.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 800;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1><i class="fas fa-check-double"></i> TaskMaster</h1>
+            <p>Manage your life, team, and tasks all in one place effortlessly.</p>
+            <a href="/signup" class="btn btn-light btn-lg rounded-pill fw-bold px-5 me-3 text-primary">Get Started</a>
+            <a href="/login" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-bold">Login</a>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-user-clock fa-4x text-primary mb-3"></i>
+                <h3 class="fw-bold">Personal Mode</h3>
+                <p class="text-muted">Keep track of your personal groceries, goals, and daily tasks with ease.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-users-cog fa-4x text-success mb-3"></i>
+                <h3 class="fw-bold">Professional Mode</h3>
+                <p class="text-muted">Create a team, invite members, and assign specific tasks to them as a leader.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-bell fa-4x text-warning mb-3"></i>
+                <h3 class="fw-bold">Smart Reminders</h3>
+                <p class="text-muted">Get immediately notified if a task is due within a week to stay on top of work.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/theme.js"></script>
+</body>
+
+</html>

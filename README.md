@@ -49,3 +49,6 @@ task-management-system/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+
+A link to my demo video of this project on linked in
+https://www.linkedin.com/posts/rehana-fathima-m_project-showcase-to-do-list-management-activity-7473702067757404160-mzE2?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAFNzIbgB5j7Q48ts3qHq5HHMUIvOmpMq3Hk
